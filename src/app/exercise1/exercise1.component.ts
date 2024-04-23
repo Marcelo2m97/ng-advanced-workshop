@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Country } from './interfaces/country.interface';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { CountryService } from './country.service';
 
 @Component({
   selector: 'app-exercise1',
@@ -7,9 +11,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Exercise1Component implements OnInit {
 
-  constructor() { }
+  countries$: Observable<Country[]> = new Observable<Country[]>();
 
-  ngOnInit() {
+  countriesDropdown: FormControl<Country['id']> = new FormControl<Country['id']>('');
+
+  constructor(
+    private _countryService: CountryService
+  ) { }
+
+  ngOnInit(): void {
+    this.getCountries();
+  }
+
+  getCountries(): void {
+    this.countries$ = this._countryService.countries$;
   }
 
 }
